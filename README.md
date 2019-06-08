@@ -5,7 +5,7 @@
 
 Клонируем репозиторий
 
-	git clone 'ссылка на программу'
+	git clone https://github.com/ivekarp/nasheradio.git
 
 Ставим библиотеки с помощью pip
 
