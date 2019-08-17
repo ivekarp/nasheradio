@@ -5,14 +5,18 @@ import vlc
 import time
 import json
 import urllib
+import requests
 import webbrowser
 from termcolor import colored
 import logo
-import Tkinter as tk
+try:
+	import Tkinter as tk
+except ImportError:
+	import tkinter as tk
 from tkinter import messagebox
 
 #VERSION
-VERSION = '1.0'
+VERSION = '1.1'
 
 #FUNCTIONS
 #----------------------------------------
@@ -35,8 +39,12 @@ def close():
 def about():
 	#singer and name of song
 	singer_url = 'https://metanashe.hostingradio.ru/current.json'
-	response = urllib.urlopen(singer_url)
-	data = json.loads(response.read())
+	try:
+		response = urllib.urlopen(singer_url)
+		data = json.loads(response.read())
+	except AttributeError:
+		response = requests.get(singer_url)
+		data = json.loads(response.text)
 	singer = data["artist"]
 	song = data["title"]
 	messagebox.showinfo("Кто поёт?",singer+" - "+song)
@@ -115,10 +123,9 @@ state = str(player.get_state())
 
 #Find out if stream is working.
 if state == "vlc.State.Error" or state == "State.Error":
-    print 'Stream is dead. Current state = {}'.format(state)
-    player.stop()
+	print('Stream is dead. Current state = {}'.format(state))
+	player.stop()
 else:
-    print 'Stream is working. Current state = {}'.format(state)
-    player.stop()
+	print('Stream is working. Current state = {}'.format(state))
 
 root.mainloop()
