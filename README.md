@@ -14,7 +14,7 @@
 	
 # Библиотеки
 
-	vlc
+	python-vlc
 	urllib
 
 ---
