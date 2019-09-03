@@ -19,7 +19,7 @@ except ImportError:
 from tkinter import messagebox
 
 #VERSION
-VERSION = '1.2'
+VERSION = '1.3'
 
 #FUNCTIONS
 #----------------------------------------
@@ -109,13 +109,38 @@ def show_news():
 		#tk.Label(news_window,text=news_list[i].get('link')).grid(row=i+1,column=0)
 	news_window.mainloop()
 
+def volume_change(volume_scale):
+	#Set player volume
+	player.audio_set_volume(int(volume_scale))
+	print('Громкость: '+volume_scale)
+	if int(volume_scale) == 0:
+		print('Звук отключен')
 
-#----------------------------------------
+def about_window():
+	#create new about window
+	about_window = tk.Tk()
+	about_window['background'] = root['background']
+	about_window.title('Об авторе')
+	about_window.resizable(False,False)
+	#Text
+	#----------------------------------------
+	about_app = tk.Label(about_window,text='Онлайн-радио радиостанции "НАШЕ Радио"\n\nРазработчик - Иван Карпов')
+	about_app['background'] = root['background']
+	about_app.grid(row=0,column=0)
+	email = 'vanhelsing66677@gmail.com'
+	email_label = tk.Label(about_window,text=email,fg="green",cursor="hand2")
+	email_label['background'] = root['background']
+	email_label.grid(row=1,column=0)
+	email_label.bind("<Button-1>",lambda e: callback("mailto:vanhelsing66677@gmail.com"))
+	about_window.mainloop()
+
+	#----------------------------------------
 
 #creating window
 root = tk.Tk()
 root.title('НАШЕ Радио '+VERSION)
-root.geometry('428x114+708+238')
+root.geometry('217x89+770+233')
+root['background'] = '#65E17B'
 root.resizable(False,False)
 
 #Logo
@@ -127,10 +152,13 @@ radio_url = 'http://nashe1.hostingradio.ru:80/nashe-128.mp3'
 #menubar
 menubar = tk.Menu()
 root.config(menu=menubar)
+menubar['background'] = 'silver'
 appmenu = tk.Menu(menubar,tearoff=0)
+appmenu['background'] = 'silver'
 menubar.add_cascade(label="Меню",menu=appmenu)
 appmenu.add_command(label="Кто поёт?",command=about)
 appmenu.add_command(label="Новости",command=show_news)
+appmenu.add_command(label="Об авторе",command=about_window)
 appmenu.add_command(label="Выйти",command=close)
 
 #define VLC instance
@@ -148,22 +176,22 @@ player.set_media(media)
 #Buttons
 #----------------------------------------
 button_play = tk.Button(text='Включить',command=play,cursor="hand2")
+button_play['bg'] = 'green'
+button_play['width'] = 10
 button_play.grid(row=0,column=0)
 
 button_stop = tk.Button(text='Остановить',command=stop,cursor="hand2")
+button_stop['bg'] = 'green'
+button_stop['width'] = 10
 button_stop.grid(row=0,column=1)
 #----------------------------------------
-
-#Text
+#Scales
 #----------------------------------------
-about_app = tk.Label(root,text='Онлайн-радио радиостанции "НАШЕ Радио"\n\nРазработчик - Иван Карпов')
-about_app.grid(row=2,column=0)
-email = 'vanhelsing66677@gmail.com'
-email_label = tk.Label(root,text=email,fg="green",cursor="hand2")
-email_label.grid(row=3,column=0)
-email_label.bind("<Button-1>",lambda e: callback("mailto:vanhelsing66677@gmail.com"))
-
-
+volume_scale = tk.Scale(root,orient=tk.HORIZONTAL,from_=0,to=100,resolution=5,command=volume_change)
+volume_scale['label'] = 'Громкость'
+volume_scale['bg'] = 'green'
+volume_scale.set(50)
+volume_scale.grid(row=1,column=0)
 #----------------------------------------
 
 #Sleep for 5 sec for VLC to complete retries.
