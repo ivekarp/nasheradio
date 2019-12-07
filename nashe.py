@@ -41,7 +41,7 @@ def close():
 #About
 def about():
 	#singer and name of song
-	singer_url = 'https://metanashe.hostingradio.ru/current.json'
+	singer_url = 'http://metanashe.hostingradio.ru/current.json'
 	try:
 		response = urllib.urlopen(singer_url)
 		data = json.loads(response.read())
@@ -57,7 +57,7 @@ def about():
 	except KeyError:
 		print('"Московский" сервер не передал информацию!')
 		print('Подключаемся к Питеру...')
-		singer_url = 'https://meta.fmgid.com/stations/nashespb/current.json'
+		singer_url = 'http://meta.fmgid.com/stations/nashespb/current.json'
 		try:
 			response = urllib.urlopen(singer_url)
 			data = json.loads(response.read())
@@ -91,10 +91,10 @@ def show_news():
 	news_list = []
 	html = requests.get(url).text
 	soup = bs(html,'lxml')
-	news = soup.find_all('div',{'class':'b__item b__item_with_overlay'})
+	news = soup.find_all('a',{'class':'news__item'})
 	for n in news:
-		news_title = n.find('div',{'class':'post__title'})
-		news_link = n.find('a',{'class':'post'})
+		news_title = n.find('span',{'class':'news__name'})
+		news_link = n
 		print(colored(news_title.text,choice(news_color),choice(news_back_color),attrs=['bold']))
 		print(colored(news_link.get('href'),choice(news_color),choice(news_back_color),attrs=['bold']))
 		news_list.append({'title':news_title.text,'link':news_link.get('href')})
