@@ -4,7 +4,6 @@
 import vlc
 import time
 import json
-import urllib
 import requests
 import webbrowser
 from termcolor import colored
@@ -43,7 +42,7 @@ def about():
 	#singer and name of song
 	singer_url = 'http://metanashe.hostingradio.ru/current.json'
 	try:
-		response = urllib.urlopen(singer_url)
+		response = requests.get(singer_url)
 		data = json.loads(response.read())
 	except AttributeError:
 		response = requests.get(singer_url)
@@ -59,7 +58,7 @@ def about():
 		print('Подключаемся к Питеру...')
 		singer_url = 'http://meta.fmgid.com/stations/nashespb/current.json'
 		try:
-			response = urllib.urlopen(singer_url)
+			response = requests.get(singer_url)
 			data = json.loads(response.read())
 		except AttributeError:
 			response = requests.get(singer_url)
